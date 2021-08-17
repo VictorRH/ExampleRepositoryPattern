@@ -16,7 +16,6 @@ namespace ExampleRepositoryPattern.BusinessLogic.Logic
             this.context = context;
         }
 
-
         public async Task<int> Add(T entity)
         {
             context.Set<T>().Add(entity);
