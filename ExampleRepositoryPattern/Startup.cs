@@ -29,13 +29,14 @@ namespace ExampleRepositoryPattern
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddTransient(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+            //services.AddTransient(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+            services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
 
 
 
             services.AddDbContext<RepositoryPatternDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.EnableSensitiveDataLogging().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddControllers();
 

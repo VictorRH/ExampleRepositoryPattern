@@ -10,19 +10,19 @@ namespace ExampleRepositoryPattern.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class StudentsController : ControllerBase
+    public class TeacherController : ControllerBase
     {
-        private readonly IGenericRepository<Student> repository;
+        private readonly IGenericRepository<Teacher> repository;
         private readonly RepositoryPatternDbContext context;
 
-        public StudentsController(IGenericRepository<Student> repository, RepositoryPatternDbContext context)
+        public TeacherController(IGenericRepository<Teacher> repository, RepositoryPatternDbContext context)
         {
             this.repository = repository;
             this.context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Student>>> GetALLStudents()
+        public async Task<ActionResult<IReadOnlyList<Teacher>>> GetAllTeachers()
         {
             var response = await repository.GetAllAsync();
             if (response.Count > 0)
@@ -32,8 +32,9 @@ namespace ExampleRepositoryPattern.Controllers
             return BadRequest();
         }
 
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudentId(int id)
+        public async Task<ActionResult<Teacher>> GetTeacherId(int id)
         {
             var response = await repository.GetByIdAsync(id);
             if (response == null)
@@ -44,9 +45,9 @@ namespace ExampleRepositoryPattern.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Student>> AddStudent(Student student)
+        public async Task<ActionResult<Teacher>> AddTeacher(Teacher teacher)
         {
-            var response = await repository.Add(student);
+            var response = await repository.Add(teacher);
             if (response == 0)
             {
                 return BadRequest();
@@ -54,23 +55,16 @@ namespace ExampleRepositoryPattern.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Student>> UpdateStudent(int id, Student student)
+        [HttpPut]
+        public async Task<ActionResult<Teacher>> UpdateTeacher(int id, Teacher teacher)
         {
-
-            //var response = await repository.GetByIdAsync(id);
-            //if (response == null)
-            //{
-            //    return NotFound();
-            //}
-
-            var validation = await context.Students.AnyAsync(x => x.Id == id);
+            var validation = await context.Teachers.AnyAsync(x => x.Id == id);
             if (validation == false)
             {
                 return NotFound();
             }
-            student.Id = id;
-            var result = await repository.Update(student);
+            teacher.Id = id;
+            var result = await repository.Update(teacher);
             if (result == 0)
             {
                 return BadRequest();
