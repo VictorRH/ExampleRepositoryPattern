@@ -2,7 +2,6 @@
 using ExampleRepositoryPattern.Core;
 using ExampleRepositoryPattern.Core.Interfaz;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,12 +12,10 @@ namespace ExampleRepositoryPattern.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly IGenericRepository<Student> repository;
-        private readonly RepositoryPatternDbContext context;
 
-        public StudentsController(IGenericRepository<Student> repository, RepositoryPatternDbContext context)
+        public StudentsController(IGenericRepository<Student> repository)
         {
             this.repository = repository;
-            this.context = context;
         }
 
         [HttpGet]
@@ -58,14 +55,8 @@ namespace ExampleRepositoryPattern.Controllers
         public async Task<ActionResult<Student>> UpdateStudent(int id, Student student)
         {
 
-            //var response = await repository.GetByIdAsync(id);
-            //if (response == null)
-            //{
-            //    return NotFound();
-            //}
-
-            var validation = await context.Students.AnyAsync(x => x.Id == id);
-            if (validation == false)
+            var response = await repository.GetByIdAsync(id);
+            if (response == null)
             {
                 return NotFound();
             }

@@ -3,6 +3,7 @@ using ExampleRepositoryPattern.Core;
 using ExampleRepositoryPattern.Core.Interfaz;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ExampleRepositoryPattern.BusinessLogic.Logic
@@ -29,13 +30,16 @@ namespace ExampleRepositoryPattern.BusinessLogic.Logic
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await context.Set<T>().FindAsync(id);
+            //return await context.Set<T>().FindAsync(id);
+            return await context.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<int> Update(T entity)
         {
             context.Set<T>().Attach(entity);
-            context.Entry(entity).State = EntityState.Modified;
+            context.Entry<T>(entity).State = EntityState.Modified;
+            //context.Entry<T>(entity).State = EntityState.Detached;
+
             return await context.SaveChangesAsync();
         }
     }

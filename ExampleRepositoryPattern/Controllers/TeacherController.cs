@@ -1,8 +1,6 @@
-﻿using ExampleRepositoryPattern.BusinessLogic.Data;
-using ExampleRepositoryPattern.Core;
+﻿using ExampleRepositoryPattern.Core;
 using ExampleRepositoryPattern.Core.Interfaz;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,12 +11,10 @@ namespace ExampleRepositoryPattern.Controllers
     public class TeacherController : ControllerBase
     {
         private readonly IGenericRepository<Teacher> repository;
-        private readonly RepositoryPatternDbContext context;
 
-        public TeacherController(IGenericRepository<Teacher> repository, RepositoryPatternDbContext context)
+        public TeacherController(IGenericRepository<Teacher> repository)
         {
             this.repository = repository;
-            this.context = context;
         }
 
         [HttpGet]
@@ -58,11 +54,12 @@ namespace ExampleRepositoryPattern.Controllers
         [HttpPut]
         public async Task<ActionResult<Teacher>> UpdateTeacher(int id, Teacher teacher)
         {
-            var validation = await context.Teachers.AnyAsync(x => x.Id == id);
-            if (validation == false)
+            var response = await repository.GetByIdAsync(id);
+            if (response == null)
             {
                 return NotFound();
             }
+
             teacher.Id = id;
             var result = await repository.Update(teacher);
             if (result == 0)
