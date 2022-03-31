@@ -10,8 +10,7 @@ namespace ExampleRepositoryPattern.BusinessLogic.Data
         {
             base.OnModelCreating(builder);
         }
-
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Student> Students => Set<Student>();
+        public DbSet<Teacher> Teachers => Set<Teacher>();
     }
 }

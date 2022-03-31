@@ -1,8 +1,6 @@
 ﻿using ExampleRepositoryPattern.Core;
 using ExampleRepositoryPattern.Core.Interfaz;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ExampleRepositoryPattern.Controllers
 {
@@ -11,12 +9,10 @@ namespace ExampleRepositoryPattern.Controllers
     public class TeacherController : ControllerBase
     {
         private readonly IGenericRepository<Teacher> repository;
-
         public TeacherController(IGenericRepository<Teacher> repository)
         {
             this.repository = repository;
         }
-
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Teacher>>> GetAllTeachers()
         {
@@ -27,8 +23,6 @@ namespace ExampleRepositoryPattern.Controllers
             }
             return BadRequest();
         }
-
-
         [HttpGet("{id}")]
         public async Task<ActionResult<Teacher>> GetTeacherId(int id)
         {
@@ -39,7 +33,6 @@ namespace ExampleRepositoryPattern.Controllers
             }
             return Ok(response);
         }
-
         [HttpPost]
         public async Task<ActionResult<Teacher>> AddTeacher(Teacher teacher)
         {
@@ -50,7 +43,6 @@ namespace ExampleRepositoryPattern.Controllers
             }
             return Ok(response);
         }
-
         [HttpPut]
         public async Task<ActionResult<Teacher>> UpdateTeacher(int id, Teacher teacher)
         {
@@ -59,7 +51,6 @@ namespace ExampleRepositoryPattern.Controllers
             {
                 return NotFound();
             }
-
             teacher.Id = id;
             var result = await repository.Update(teacher);
             if (result == 0)
@@ -68,6 +59,5 @@ namespace ExampleRepositoryPattern.Controllers
             }
             return Ok(result);
         }
-
     }
 }

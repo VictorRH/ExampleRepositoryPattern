@@ -1,9 +1,6 @@
-﻿using ExampleRepositoryPattern.BusinessLogic.Data;
-using ExampleRepositoryPattern.Core;
+﻿using ExampleRepositoryPattern.Core;
 using ExampleRepositoryPattern.Core.Interfaz;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ExampleRepositoryPattern.Controllers
 {
@@ -12,12 +9,10 @@ namespace ExampleRepositoryPattern.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly IGenericRepository<Student> repository;
-
         public StudentsController(IGenericRepository<Student> repository)
         {
             this.repository = repository;
         }
-
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Student>>> GetALLStudents()
         {
@@ -28,7 +23,6 @@ namespace ExampleRepositoryPattern.Controllers
             }
             return BadRequest();
         }
-
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudentId(int id)
         {
@@ -39,7 +33,6 @@ namespace ExampleRepositoryPattern.Controllers
             }
             return Ok(response);
         }
-
         [HttpPost]
         public async Task<ActionResult<Student>> AddStudent(Student student)
         {
@@ -50,7 +43,6 @@ namespace ExampleRepositoryPattern.Controllers
             }
             return Ok(response);
         }
-
         [HttpPut("{id}")]
         public async Task<ActionResult<Student>> UpdateStudent(int id, Student student)
         {
@@ -68,6 +60,5 @@ namespace ExampleRepositoryPattern.Controllers
             }
             return Ok(result);
         }
-
     }
 }
